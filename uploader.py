@@ -32,13 +32,12 @@ def main(posted_pic_list):
     try:
         for pic in pics:
             if pic in posted_pic_list:
-                print('pic already in insta!')
                 continue
             else:
                 posted_pic_list.append(pic)
                 write_txt(pic)
                 bot.upload_photo(pic)
-    except Exception as e:
+    except ValueError as e:
         print(str(e))
 
 

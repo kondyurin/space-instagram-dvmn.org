@@ -1,5 +1,5 @@
 import requests
-from get_image import get_img,directory
+from get_image import fetch_img,directory
 
 
 def main():
@@ -8,8 +8,8 @@ def main():
     launch_data = response.json()
 
     for index, img in enumerate(launch_data['links']['flickr_images'], start=1):
-        path = '{}/{}.jpg'.format(directory,index)
-        get_img(img,path)
+        path = os.path.join(directory,index)
+        fetch_img(img,path)
 
 
 if __name__ == "__main__":
