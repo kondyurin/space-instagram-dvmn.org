@@ -1,16 +1,18 @@
+import os
 import requests
-from get_image import fetch_img,directory
+from get_image import fetch_img, get_file_extension
 
 
-def main():
+def fetch_spacex_last_launch():
     url = 'https://api.spacexdata.com/v3/launches/latest'
     response = requests.get(url)
     launch_data = response.json()
 
     for index, img in enumerate(launch_data['links']['flickr_images'], start=1):
-        path = os.path.join(directory,index)
-        fetch_img(img,path)
+        img_extension = get_file_extension(img)
+        path = os.path.join('images', '{}{}'.format(index, img_extension))
+        fetch_img(img, path)
 
 
 if __name__ == "__main__":
-    main()
+    fetch_spacex_last_launch()
