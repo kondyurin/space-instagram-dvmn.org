@@ -3,17 +3,16 @@ import requests
 import shutil
 
 
-directory = 'images'
-
-
 def fetch_img(url, path):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
+    if not os.path.exists('images'):
+        os.makedirs('images')
     response = requests.get(url, stream=True)
     if not response.ok:
-        return
+        return None
     with open(path, 'wb') as f:
-        r.raw.decode_content = True
-        shutil.copyfileobj(r.raw, f)
+        response.raw.decode_content = True
+        shutil.copyfileobj(response.raw, f)
 
 
+if __name__ == '__main__':
+    fetch_img('https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg', 'images/img1.jpeg')
