@@ -4,10 +4,12 @@ import sys
 import time
 from io import open
 from instabot import Bot
+from dotenv import load_dotenv
 
 
-PASSWORD = os.environ["instagram_pass"]
-LOGIN = os.environ["instagram_login"]
+load_dotenv()
+password = os.getenv("instagram_password")
+login = os.getenv("instagram_login")
 
 
 def read_txt():
@@ -15,7 +17,8 @@ def read_txt():
     try:
         with open('pics.txt', 'r', encoding='utf8') as f:
             posted_pic_list = f.read().splitlines()
-    except Exception:
+    except (OSError, ValueError) as e:
+        print(str(e))
         posted_pic_list = []
     return posted_pic_list
 
@@ -27,7 +30,7 @@ def write_txt(pic):
 
 def main(posted_pic_list):
     bot = Bot()
-    bot.login(username=LOGIN, password=PASSWORD)
+    bot.login(username=login, password=password)
     pics = glob.glob("**/*.jpg", recursive=True)
     try:
         for pic in pics:
