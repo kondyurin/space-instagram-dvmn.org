@@ -22,4 +22,5 @@ def get_file_extension(url):
 
 
 if __name__ == '__main__':
-    fetch_img('https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg', 'images/img1{}'.format(file_extension))
+    img_url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
+    fetch_img(img_url, 'images/img1{}'.format(get_file_extension(img_url)))
