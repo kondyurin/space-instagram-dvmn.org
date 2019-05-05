@@ -10,40 +10,24 @@ def fetch_json(url, payload):
 
 
 def fetch_hubble_photos():
-    img_collections = ['wallpaper', 'spacecraft']
-    max_img_limit = 3
-    images_id_wal = []
-    images_id_spa = []
-    images_urls = []
-
-    for collection_name in img_collections:
-        payload = {
-            'page': 'all'
-        }
-        url = 'http://hubblesite.org/api/v3/images/{}'.format(collection_name)
-        for item in fetch_json(url,payload):
-            if not collection_name is 'wallpaper':
-                images_id_spa.append(item['id'])
-                images_id = images_id_wal + images_id_spa
-            images_id_wal.append(item['id'])
-                
-
-    for index, image_id in enumerate(images_id, start=1):
+    """Fetch photo from 'wallpaper' hubble collection"""
+    img_collection = 'wallpaper'
+    images_ids = []
+    payload = {
+        'page': 'all'
+    }
+    url = 'http://hubblesite.org/api/v3/images/{}'.format(img_collection)
+    for item in fetch_json(url,payload):
+        images_ids.append(item['id'])
+    for index, image_id in enumerate(images_ids, start=1):
         payload = {}
         url = 'http://hubblesite.org/api/v3/image/{}'.format(image_id)
-        for item in fetch_json(url,payload)['image_files']:
-            images_urls.append(item['file_url'])
-        if index is max_img_limit:
-            break
-        else:
-            path = os.path.join('images', '{}'.format(index))
-            for img_url in images_urls:
-                img_extension = get_file_extension(img_url)
-                fetch_img(img_url, '{}{}'.format(path, img_extension))
-
+        data = fetch_json(url, payload)
+        path = os.path.join('images', '{}'.format(index))
+        for image_data in data['image_files']:
+            img_extension = get_file_extension(image_data['file_url'])
+            fetch_img(image_data['file_url'], '{}{}'.format(path, img_extension))
+            break  # break to save only first photo size
 
 if __name__ == "__main__":
     fetch_hubble_photos()
-
-
-    
